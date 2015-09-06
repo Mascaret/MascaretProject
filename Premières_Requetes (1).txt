@@ -1,0 +1,48 @@
+########################## OUVERTURE PROGRAMME ##########################
+
+
+Input:
+		Login
+		Password
+
+Output:
+		True / False
+
+########################### HOMEPAGE PROGRAMME ##########################
+
+Input:
+		ID User
+
+Output:
+		Outils disponibles 
+			type
+			Module lié		
+
+
+########################### SELECTION1 OUTILS1 ########################### 
+
+Input:
+		ID User
+
+Output:
+		Liste Projets disponibles
+			Loc
+			Customer
+			Type
+
+
+###########################  SELECTION PROJET  ###########################
+
+Input:
+		Nom Projet
+
+Output:
+		Loc
+		Customer
+		Type
+		Date début
+		Managers
+		WBS Liés
+			Type WBS
+			Loc WBS
+
