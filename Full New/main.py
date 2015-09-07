@@ -7,78 +7,15 @@ from kivy.app import App
 from kivy.uix.image import Image
 from kivy.graphics import Color, Rectangle
 from kivy.properties import ObjectProperty, StringProperty, BooleanProperty
-from kivy.core.window import Window
 from kivy.uix.modalview import ModalView
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.animation import Animation
 import time
 import pymysql
-from user import User
+from user.user import User
 from kivy.uix.screenmanager import ScreenManager, Screen, SwapTransition, FallOutTransition, NoTransition
-
-
-#ceci est un test
-
-
-class HoverBehavior(object):
-    """Hover behavior.
-
-    :Events:
-        `on_enter`
-            Fired when mouse enter the bbox of the widget.
-        `on_leave`
-            Fired when the mouse exit the widget
-    """
-
-    hovered = BooleanProperty(False)
-    border_point= ObjectProperty(None)
-    '''Contains the last relevant point received by the Hoverable. This can
-    be used in `on_enter` or `on_leave` in order to know where was dispatched the event.
-    '''
-
-    def __init__(self, **kwargs):
-        self.register_event_type('on_enter')
-        self.register_event_type('on_leave')
-        Window.bind(mouse_pos=self.on_mouse_pos)
-        super(HoverBehavior, self).__init__(**kwargs)
-
-    def on_mouse_pos(self, *args):
-        if not self.get_root_window():
-            return # do proceed if I'm not displayed <=> If have no parent
-        pos = args[1]
-        #Next line to_widget allow to compensate for relative layout
-        inside = self.collide_point(*self.to_widget(*pos))
-        if self.hovered == inside:
-            #We have already done what was needed
-            return
-        self.border_point = pos
-        self.hovered = inside
-        if inside:
-            self.dispatch('on_enter')
-        else:
-            self.dispatch('on_leave')
-
-    def on_enter(self):
-        pass
-
-    def on_leave(self):
-        pass
-
-
-
-
-class HoverButton(Button, HoverBehavior):
-    def on_enter(self):
-        self.background_normal= 'rectbut2.png'
-
-    def on_leave(self):
-        self.background_normal= 'rectbut1.png'
-
-
-
-
-
+from gui.hoverclasses import HoverButton
 
 class MascaretRoot(FloatLayout):
 
@@ -103,7 +40,7 @@ class MascaretLoginScreen(FloatLayout):
     def login(self):
         animation = Animation(x=self.login_area.x - self.login_area.width, duration=0.8)
         animation.start(self.login_area)
-        self.pan_screen= Image(source= "mylogo1.jpg", keep_ratio= False, allow_stretch= True,
+        self.pan_screen= Image(source= "gui/mylogo1.jpg", keep_ratio= False, allow_stretch= True,
                         color= (1, 1, 1, 0.1))
         self.add_widget(self.pan_screen)
         animation.bind(on_complete=self.check_login)

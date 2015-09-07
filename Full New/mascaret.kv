@@ -8,7 +8,7 @@ MascaretRoot:
     login_area: login_rect
     canvas:
         Rectangle:
-            source: 'mylogo8.jpg'
+            source: 'gui/mylogo8.jpg'
             size: root.width if (root.width / root.height) > (1920 / 1080) else root.height * (1920 / 1080), root.height if (root.width / root.height) <= (1920 / 1080) else root.width / (1920 / 1080)
             pos: self.pos
     BoxLayout:
@@ -19,7 +19,7 @@ MascaretRoot:
                 Color:
                     rgba: (0,0,0,0.5)
                 Rectangle:                
-                    source: 'testrectangle.png'
+                    source: 'gui/testrectangle.png'
                     size: (self.width + 120, self.height + 20)
                     pos: self.x - 100, self.y + 5
             size_hint: (None, None)
@@ -117,22 +117,22 @@ MascaretRoot:
                             pos: self.pos
                     HoverButton:
                         text: 'ModuleRH'
-                        background_normal: 'rectbut1.png'
+                        background_normal: 'gui/rectbut1.png'
                         background_color: (100/255, 100/255, 230/255, 1)
                         on_release: self.parent.parent.parent.parent.parent.manager.current = 'modulerh'
                     HoverButton:
                         text: 'ModuleCG'
-                        background_normal: 'rectbut1.png'
+                        background_normal: 'gui/rectbut1.png'
                         background_color: (100/255, 230/255, 230/255, 1)
                         on_release: self.parent.parent.parent.parent.parent.manager.current = 'modulecg'
                     HoverButton:
                         text: 'ModuleCO'
-                        background_normal: 'rectbut1.png'
+                        background_normal: 'gui/rectbut1.png'
                         background_color: (236/255, 232/255, 100/255, 1)
                         on_release: self.parent.parent.parent.parent.parent.manager.current = 'moduleco'
                     HoverButton:
                         text: 'ModuleLO'
-                        background_normal: 'rectbut1.png'
+                        background_normal: 'gui/rectbut1.png'
                         background_color: (230/255, 100/255, 100/255, 1)
                         on_release: self.parent.parent.parent.parent.parent.manager.current = 'modulelo'
                 HoverButton:
