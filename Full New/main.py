@@ -14,6 +14,9 @@ from kivy.animation import Animation
 import time
 import pymysql
 from user.user import User
+from user.module import Module
+from user.outil import Outil
+
 from kivy.uix.screenmanager import ScreenManager, Screen, SwapTransition, FallOutTransition, NoTransition
 from gui.hoverclasses import HoverButton
 
@@ -67,7 +70,7 @@ class MascaretLoginScreen(FloatLayout):
 
         if login_data:
             global user_logged
-            user_logged = user_login
+            user_logged = User(user_login)
             app.root.show_bigscreen()
 
 
@@ -96,19 +99,53 @@ class MascaretBigScreen(ScreenManager):
 
         ###################Looking into Module#####################
 
-        # DB CONNECTION
-        # db = pymysql.connect("localhost","root","","mascaretdb")
-        # cursor = db.cursor()
-        #
-        # login_query = """SELECT m.intitule,  o.intitule
-        #                  FROM module as m , outil as o, utilisateur as u, utilisateuroutil as uo
-        #                 WHERE u.login =%s AND uo.idUtilisateur = u.idUtilisateur
-        #                 AND  uo.idOutil = o.idOutil AND o.idModule = m.idModule"""
-        # #a l'avenir capter une exception TMTC la security
-        #
-        # login_data = cursor.execute(login_query,(user_login,user_password))
-        # cursor.close()
-        # db.close()
+        #DB CONNECTION
+        db = pymysql.connect("localhost","root","","mascaretdb")
+        cursor = db.cursor()
+
+        login_query = """SELECT m.intitule, o.intitule
+                        FROM module AS m , outil AS o, utilisateur AS u, utilisateuroutil AS uo
+                        WHERE u.login =%s AND uo.idUtilisateur = u.idUtilisateur
+                        AND uo.idOutil = o.idOutil AND o.idModule = m.idModule"""
+        # METTRE UN BLOC TRY
+
+        #Execute la requete SQL, mettre un try
+        temporaire = cursor.execute(login_query,(user_logged.login))
+
+        #On obtient une matrice
+        module_data = cursor.fetchall()
+
+        list_modules = []
+
+        #On va chercher les infos
+        for row in module_data:
+            temp_module = Module(str(row[0]))
+
+            module_appearance = False
+            for mod in list_modules:
+                #Si le module existe deja dans la liste
+                if mod.module_name == temp_module.module_name:
+                    module_appearance = True
+                    index_mod = list_modules.index(mod)
+                    break
+
+            if module_appearance:
+                list_modules[index_mod].list_outils.append(Outil(str(row[1])))
+            else:
+                temp_module.list_outils.append(Outil(str(row[1])))
+                list_modules.append(temp_module)
+
+        for mod in list_modules:
+            print(mod.module_name)
+
+
+        #    if temp_mode in list_modules
+        #    list_modules.append(str(row[0]))
+
+        if temporaire:
+            print("SUCCESS")
+        cursor.close()
+        db.close()
 
         for mod in [ModuleRH(),ModuleCG(),ModuleCO(),ModuleLO()]:
             self.add_widget(mod)
@@ -138,7 +175,7 @@ class MascaretBigScreen(ScreenManager):
             except:
                 pass
 
-        print(user_logged)
+        print(user_logged.login)
 
 
     def on_right_panel(self, *args):
