@@ -14,6 +14,7 @@ from kivy.uix.button import Button
 from kivy.animation import Animation
 import time
 import pymysql
+from user import User
 from kivy.uix.screenmanager import ScreenManager, Screen, SwapTransition, FallOutTransition, NoTransition
 
 
@@ -22,26 +23,26 @@ from kivy.uix.screenmanager import ScreenManager, Screen, SwapTransition, FallOu
 
 class HoverBehavior(object):
     """Hover behavior.
- 
+
     :Events:
         `on_enter`
             Fired when mouse enter the bbox of the widget.
         `on_leave`
             Fired when the mouse exit the widget
     """
- 
+
     hovered = BooleanProperty(False)
     border_point= ObjectProperty(None)
     '''Contains the last relevant point received by the Hoverable. This can
     be used in `on_enter` or `on_leave` in order to know where was dispatched the event.
     '''
- 
+
     def __init__(self, **kwargs):
         self.register_event_type('on_enter')
         self.register_event_type('on_leave')
         Window.bind(mouse_pos=self.on_mouse_pos)
         super(HoverBehavior, self).__init__(**kwargs)
- 
+
     def on_mouse_pos(self, *args):
         if not self.get_root_window():
             return # do proceed if I'm not displayed <=> If have no parent
@@ -57,10 +58,10 @@ class HoverBehavior(object):
             self.dispatch('on_enter')
         else:
             self.dispatch('on_leave')
- 
+
     def on_enter(self):
         pass
- 
+
     def on_leave(self):
         pass
 
@@ -70,7 +71,7 @@ class HoverBehavior(object):
 class HoverButton(Button, HoverBehavior):
     def on_enter(self):
         self.background_normal= 'rectbut2.png'
- 
+
     def on_leave(self):
         self.background_normal= 'rectbut1.png'
 
@@ -80,7 +81,7 @@ class HoverButton(Button, HoverBehavior):
 
 
 class MascaretRoot(FloatLayout):
-    
+
     def __init__(self):
         super(MascaretRoot, self).__init__()
         self.mascaretloginscreen = MascaretLoginScreen()
@@ -98,7 +99,7 @@ class MascaretLoginScreen(FloatLayout):
     password_box = ObjectProperty()
     error_box = ObjectProperty()
     login_area = ObjectProperty()
-    
+
     def login(self):
         animation = Animation(x=self.login_area.x - self.login_area.width, duration=0.8)
         animation.start(self.login_area)
@@ -112,18 +113,27 @@ class MascaretLoginScreen(FloatLayout):
         user_login = self.login_box.text
         user_password = self.password_box.text
 
+        #######################################
+        # DB CONNECTION
+
         db = pymysql.connect("localhost","root","","mascaretdb")
         cursor = db.cursor()
 
         login_query = "SELECT * FROM utilisateur WHERE login =%s AND password = %s"
         #a l'avenir capter une exception TMTC la security
-        
-        login_data = cursor.execute(login_query,(user_login,user_password))
 
-        
+        login_data = cursor.execute(login_query,(user_login,user_password))
+        cursor.close()
+        db.close()
+
+        ########################################
+
         if login_data:
+            global user_logged
+            user_logged = user_login
             app.root.show_bigscreen()
-            
+
+
         else:
             self.login_box.focus = True
             self.remove_widget(self.pan_screen)
@@ -141,13 +151,33 @@ class MascaretLoginScreen(FloatLayout):
 class MascaretBigScreen(ScreenManager):
     mode = StringProperty("wide")
     right_panel = ObjectProperty()
-    
+
     def __init__(self,**kwargs):
         super(MascaretBigScreen, self).__init__()
         self.transition=NoTransition()
         self.add_widget(HomePage())
+
+        ###################Looking into Module#####################
+
+        # DB CONNECTION
+        # db = pymysql.connect("localhost","root","","mascaretdb")
+        # cursor = db.cursor()
+        #
+        # login_query = """SELECT m.intitule,  o.intitule
+        #                  FROM module as m , outil as o, utilisateur as u, utilisateuroutil as uo
+        #                 WHERE u.login =%s AND uo.idUtilisateur = u.idUtilisateur
+        #                 AND  uo.idOutil = o.idOutil AND o.idModule = m.idModule"""
+        # #a l'avenir capter une exception TMTC la security
+        #
+        # login_data = cursor.execute(login_query,(user_login,user_password))
+        # cursor.close()
+        # db.close()
+
         for mod in [ModuleRH(),ModuleCG(),ModuleCO(),ModuleLO()]:
             self.add_widget(mod)
+
+        ################################################################
+
         self.right_panel= RightPanel()
         self.current_screen.screen1_box.add_widget(self.right_panel)
 
@@ -168,8 +198,10 @@ class MascaretBigScreen(ScreenManager):
                 self.current_screen.get_screen('2').add_widget(self.right_panel)
                 self.current_screen.right_Button.pos_hint = {'x': 0.93}
                 self.current_screen.right_Button.disabled= False
-            except: 
+            except:
                 pass
+
+        print(user_logged)
 
 
     def on_right_panel(self, *args):
@@ -178,7 +210,7 @@ class MascaretBigScreen(ScreenManager):
 class HomePage(Screen, ScreenManager):
     screen1_box= ObjectProperty()
     right_Button= ObjectProperty()
-    
+
 class ModuleRH(Screen, ScreenManager):
     pass
 
@@ -205,11 +237,3 @@ class Mascaret(App):
 ##        super(Mascaret, self).__init__()
 
 Mascaret().run()
-
-
-
-
-
-
-
-
