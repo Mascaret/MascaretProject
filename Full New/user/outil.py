@@ -18,6 +18,11 @@ class HPOutilsButton(HoverButton):
 
         self.parent.parent.parent.parent.parent.right_panel.clear_widgets()
         self.parent.parent.parent.parent.parent.right_panel.add_widget(self.linkedoutils)
+
+        if self.parent.parent.parent.parent.parent.parent.mode == "narrow":
+            print("rrrr")
+            self.parent.parent.parent.parent.manager.transition.direction = 'left'
+            self.parent.parent.parent.parent.manager.current = "2"
         
 
     def define_linked_tool(self):
@@ -41,6 +46,7 @@ class HPOutilsButton(HoverButton):
         elif self.linkedoutils_name == "Liste commandes":
 
             return Liste_Commandes()
+
 
 
 class Outil:
