@@ -5,10 +5,4 @@ class EntJur:
         self.ent_name = ent_name
 
 class ListEntJur(list):
-
     pass
-
-
-list1 =
-
-list1.append(entitejur1)
