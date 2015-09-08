@@ -53,6 +53,7 @@ MascaretRoot:
                     spacing: "5dp"
                     padding: "8dp"
                     TextInput:
+                        text: "claeysremi"
                         focus: True
                         background_color: (1, 1, 1, 0)
                         foreground_color: (1,1,1,0.8)
@@ -74,6 +75,7 @@ MascaretRoot:
                         font_name: 'OCRAEXT.TTF'
                         font_size: '20dp'
                         cursor_color: 1,1,1,0.8
+                        text: "doucement"
             BoxLayout:
                 size_hint: 1, 0.25
                 Label:
@@ -85,6 +87,7 @@ MascaretRoot:
                     valign: 'top'
                     halign: 'right'
 
+
 <MascaretBigScreen>:
     mode: "narrow" if self.width < 800 else "wide"
 
@@ -92,6 +95,7 @@ MascaretRoot:
     name: 'homepage'
     screen1_box: box
     right_Button: right_but
+    module_box: module_box
     Screen:
         name: '1'
         BoxLayout:
@@ -105,6 +109,7 @@ MascaretRoot:
                         size: self.size
                         pos: 0,0
                 GridLayout:
+                    id: module_box
                     spacing: 30
                     size_hint: 0.5, 0.5
                     pos_hint: {'x': 0.25, 'y': 0.15}
@@ -115,26 +120,7 @@ MascaretRoot:
                         Rectangle:
                             size: self.size
                             pos: self.pos
-                    HoverButton:
-                        text: 'ModuleRH'
-                        background_normal: 'gui/rectbut1.png'
-                        background_color: (100/255, 100/255, 230/255, 1)
-                        on_release: self.parent.parent.parent.parent.parent.manager.current = 'modulerh'
-                    HoverButton:
-                        text: 'ModuleCG'
-                        background_normal: 'gui/rectbut1.png'
-                        background_color: (100/255, 230/255, 230/255, 1)
-                        on_release: self.parent.parent.parent.parent.parent.manager.current = 'modulecg'
-                    HoverButton:
-                        text: 'ModuleCO'
-                        background_normal: 'gui/rectbut1.png'
-                        background_color: (236/255, 232/255, 100/255, 1)
-                        on_release: self.parent.parent.parent.parent.parent.manager.current = 'moduleco'
-                    HoverButton:
-                        text: 'ModuleLO'
-                        background_normal: 'gui/rectbut1.png'
-                        background_color: (230/255, 100/255, 100/255, 1)
-                        on_release: self.parent.parent.parent.parent.parent.manager.current = 'modulelo'
+
                 HoverButton:
                     id: right_but
                     size_hint: 0.07,1
@@ -147,7 +133,6 @@ MascaretRoot:
                         self.parent.parent.parent.manager.transition.direction = 'left'
                         self.parent.parent.parent.manager.current = '2'
 
-        
             
     Screen:
         name: '2'
@@ -162,8 +147,9 @@ MascaretRoot:
 
 
 
-<ModuleRH>:
-    name: 'modulerh'
+
+<ModuleGUI>:
+    tools_box: tools_boxe
     Screen:
         name: '1'
         FloatLayout:
@@ -174,6 +160,7 @@ MascaretRoot:
                     size: self.size
                     pos: 0,0
             GridLayout:
+                id: tools_boxe
                 spacing: 30
                 size_hint: 0.5, 0.5
                 pos_hint: {'x': 0.25, 'y': 0.15}
@@ -184,86 +171,6 @@ MascaretRoot:
                     Rectangle:
                         size: self.size
                         pos: self.pos
-                Button:
-                    text: 'Outil1'
-                    background_normal: ''
-                    background_color: (0, 0, 180/255, 1)
-                Button:
-                    text: 'Outil2'
-                    background_normal: ''
-                    background_color: (0, 0, 180/255, 1)
-                Button:
-                    text: 'Outil3'
-                    background_normal: ''
-                    background_color: (0, 0, 180/255, 1)
-                Button:
-                    text: 'Outil4'
-                    background_normal: ''
-                    background_color: (0, 0, 180/255, 1)
-            Button:
-                size_hint: 0.07,1
-                pos_hint: {'x': 0.93}
-                text: 'Go to Screen 2'
-                background_normal: ''
-                background_color: (230/255, 230/255, 230/255, 1)
-                on_press:
-                    self.parent.parent.manager.transition.direction = 'left'
-                    self.parent.parent.manager.current = '2'
-            Button:
-                size_hint: 0.1,0.1
-                pos_hint: {'y': 0.9}
-                text: 'HP'
-                on_release: self.parent.parent.parent.manager.current = 'homepage'
-        
-    Screen:
-        name: '2'
-        Button:
-            background_normal: ''
-            background_color: (230/255, 230/255, 230/255, 1)
-            text: 'Go to Screen 1'
-            on_press:
-                self.parent.manager.transition.direction = 'right'
-                self.parent.manager.current = '1'
-
-
-<ModuleCG>:
-    name: 'modulecg'
-    Screen:
-        name: '1'
-        FloatLayout:
-            canvas:
-                Color:
-                    rgba: (194/255, 194/255, 230/255, 1)
-                Rectangle:
-                    size: self.size
-                    pos: 0,0
-            GridLayout:
-                spacing: 30
-                size_hint: 0.5, 0.5
-                pos_hint: {'x': 0.25, 'y': 0.15}
-                cols: 2
-                canvas:
-                    Color:
-                        rgba: (194/255, 194/255, 230/255, 1)
-                    Rectangle:
-                        size: self.size
-                        pos: self.pos
-                Button:
-                    text: 'Outil1'
-                    background_normal: ''
-                    background_color: (0, 0, 180/255, 1)
-                Button:
-                    text: 'Outil2'
-                    background_normal: ''
-                    background_color: (0, 0, 180/255, 1)
-                Button:
-                    text: 'Outil3'
-                    background_normal: ''
-                    background_color: (0, 0, 180/255, 1)
-                Button:
-                    text: 'Outil4'
-                    background_normal: ''
-                    background_color: (0, 0, 180/255, 1)
             Button:
                 size_hint: 0.07,1
                 pos_hint: {'x': 0.93}
@@ -291,133 +198,10 @@ MascaretRoot:
 
 
 
-<ModuleCO>:
-    name: 'moduleco'
-    Screen:
-        name: '1'
-        FloatLayout:
-            canvas:
-                Color:
-                    rgba: (194/255, 194/255, 230/255, 1)
-                Rectangle:
-                    size: self.size
-                    pos: 0,0
-            GridLayout:
-                spacing: 30
-                size_hint: 0.5, 0.5
-                pos_hint: {'x': 0.25, 'y': 0.15}
-                cols: 2
-                canvas:
-                    Color:
-                        rgba: (194/255, 194/255, 230/255, 1)
-                    Rectangle:
-                        size: self.size
-                        pos: self.pos
-                Button:
-                    text: 'Outil1'
-                    background_normal: ''
-                    background_color: (0, 0, 180/255, 1)
-                Button:
-                    text: 'Outil2'
-                    background_normal: ''
-                    background_color: (0, 0, 180/255, 1)
-                Button:
-                    text: 'Outil3'
-                    background_normal: ''
-                    background_color: (0, 0, 180/255, 1)
-                Button:
-                    text: 'Outil4'
-                    background_normal: ''
-                    background_color: (0, 0, 180/255, 1)
-            Button:
-                size_hint: 0.07,1
-                pos_hint: {'x': 0.93}
-                text: 'Go to Screen 2'
-                background_normal: ''
-                background_color: (230/255, 230/255, 230/255, 1)
-                on_press:
-                    self.parent.parent.manager.transition.direction = 'left'
-                    self.parent.parent.manager.current = '2'
-            Button:
-                size_hint: 0.1,0.1
-                pos_hint: {'y': 0.9}
-                text: 'HP'
-                on_release: self.parent.parent.parent.manager.current = 'homepage'
-        
-    Screen:
-        name: '2'
-        Button:
-            background_normal: ''
-            background_color: (230/255, 230/255, 230/255, 1)
-            text: 'Go to Screen 1'
-            on_press:
-                self.parent.manager.transition.direction = 'right'
-                self.parent.manager.current = '1'
 
 
 
-<ModuleLO>:
-    name: 'modulelo'
-    Screen:
-        name: '1'
-        FloatLayout:
-            canvas:
-                Color:
-                    rgba: (194/255, 194/255, 230/255, 1)
-                Rectangle:
-                    size: self.size
-                    pos: 0,0
-            GridLayout:
-                spacing: 30
-                size_hint: 0.5, 0.5
-                pos_hint: {'x': 0.25, 'y': 0.15}
-                cols: 2
-                canvas:
-                    Color:
-                        rgba: (194/255, 194/255, 230/255, 1)
-                    Rectangle:
-                        size: self.size
-                        pos: self.pos
-                Button:
-                    text: 'Outil1'
-                    background_normal: ''
-                    background_color: (0, 0, 180/255, 1)
-                Button:
-                    text: 'Outil2'
-                    background_normal: ''
-                    background_color: (0, 0, 180/255, 1)
-                Button:
-                    text: 'Outil3'
-                    background_normal: ''
-                    background_color: (0, 0, 180/255, 1)
-                Button:
-                    text: 'Outil4'
-                    background_normal: ''
-                    background_color: (0, 0, 180/255, 1)
-            Button:
-                size_hint: 0.07,1
-                pos_hint: {'x': 0.93}
-                text: 'Go to Screen 2'
-                background_normal: ''
-                background_color: (230/255, 230/255, 230/255, 1)
-                on_press:
-                    self.parent.parent.manager.transition.direction = 'left'
-                    self.parent.parent.manager.current = '2'
-            Button:
-                size_hint: 0.1,0.1
-                pos_hint: {'y': 0.9}
-                text: 'HP'
-                on_release: self.parent.parent.parent.manager.current = 'homepage'
-        
-    Screen:
-        name: '2'
-        Button:
-            background_normal: ''
-            background_color: (230/255, 230/255, 230/255, 1)
-            text: 'Go to Screen 1'
-            on_press:
-                self.parent.manager.transition.direction = 'right'
-                self.parent.manager.current = '1'
+
 
 
 <RightPanel>:
