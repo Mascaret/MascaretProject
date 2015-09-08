@@ -33,7 +33,6 @@ class MascaretRoot(FloatLayout):
 
 class MascaretHomeScreen(ScreenManager):
     mode = StringProperty("wide")
-    right_panel = ObjectProperty()
 
     def __init__(self,**kwargs):
         super(MascaretHomeScreen, self).__init__()
@@ -45,14 +44,14 @@ class MascaretHomeScreen(ScreenManager):
         self.add_widget(self.homepage)
 
         self.create_modules_and_tools(module_data)
-                  
-        
+
+
 ##        self.right_panel= RightPanel()
 ##        self.current_screen.screen1_box.add_widget(self.right_panel)
 
 
     def get_module_available(self):
-        
+
                 ###################Looking into Module#####################
 
         #DB CONNECTION
@@ -66,7 +65,7 @@ class MascaretHomeScreen(ScreenManager):
         # METTRE UN BLOC TRY
 
         #Execute la requete SQL, mettre un try
-        global user_logged
+        user_logged = User()
         temporaire = cursor.execute(login_query,(user_logged.login))
 
         #On obtient une matrice
@@ -77,7 +76,7 @@ class MascaretHomeScreen(ScreenManager):
 
         return module_data
 
-    
+
     def create_modules_and_tools(self, module_data):
 
         list_modules = []
@@ -107,32 +106,40 @@ class MascaretHomeScreen(ScreenManager):
                 newmodule.tools_box.add_widget(HPOutilsButton(tools.outil_name))
             self.add_widget(newmodule)
             self.homepage.module_box.add_widget(HPModuleButton(strLinkedModule=mod.module_name))
-    
 
-##
-##    def on_mode(self, widget, mode):
-##        if mode == "wide" :
-##            print("wide")
-##            try:
-##                self.current_screen.right_Button.pos_hint = {'x': 1}
-##                self.current_screen.right_Button.disabled= True
-##                self.current_screen.get_screen('2').remove_widget(self.right_panel)
-##                self.current_screen.screen1_box.add_widget(self.right_panel)
-##            except:
-##                pass
-##        else:
-##            print("narrow")
-##            try:
-##                self.current_screen.right_Button.pos_hint = {'x': 0.93}
-##                self.current_screen.right_Button.disabled= False
-##                self.current_screen.screen1_box.remove_widget(self.right_panel)
-##                self.current_screen.get_screen('2').add_widget(self.right_panel)
-##                print(self.current_screen.name)
-##            except:
-##                pass
 
-    def on_right_panel(self, *args):
-        pass
+
+    def on_mode(self, widget, mode):
+        if mode == "wide" :
+            print("wide")
+            for screen in self.screens:
+                print(screen.name)
+                screen.right_Button.pos_hint = {'x': 1}
+                screen.right_Button.disabled= True
+                try:
+                    screen.get_screen('2').remove_widget(screen.right_panel)
+                except:
+                    pass
+                try:
+                    screen.screen1_box.add_widget(screen.right_panel)
+                except:
+                    pass
+
+
+        else:
+            print("narrow")
+            for screen in self.screens:
+                print(screen.name)
+                screen.right_Button.pos_hint = {'x': 0.93}
+                screen.right_Button.disabled= False
+                try:
+                    screen.screen1_box.remove_widget(screen.right_panel)
+                except:
+                    pass
+                try:
+                    screen.get_screen('2').add_widget(screen.right_panel)
+                except:
+                    pass
 
 
 
@@ -156,7 +163,5 @@ class RightPanelBtn(Button):
 
 
 class Mascaret(App):
-    global user_logged
-    user_logged = User("claeysremi")
-
+    pass
 Mascaret().run()
