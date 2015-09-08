@@ -19,8 +19,8 @@ class HomePage(Screen, ScreenManager):
     screen1_box= ObjectProperty()
     right_Button= ObjectProperty()
     module_box= ObjectProperty()
-
-
+    right_panel= ObjectProperty()
+    
 
 class Module:
 
@@ -30,3 +30,6 @@ class Module:
 
 class ModuleGUI(Screen, ScreenManager):
     tools_box = ObjectProperty()
+    screen1_box = ObjectProperty()
+    right_Button= ObjectProperty()
+    right_panel= ObjectProperty()

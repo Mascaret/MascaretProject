@@ -27,19 +27,33 @@ class MascaretRoot(FloatLayout):
 
     def show_bigscreen(self):
         self.clear_widgets()
-        self.mascaretbigscreen = MascaretBigScreen()
-        self.add_widget(self.mascaretbigscreen)
+        self.mascarethomescreen = MascaretHomeScreen()
+        self.add_widget(self.mascarethomescreen)
 
 
-class MascaretBigScreen(ScreenManager):
+class MascaretHomeScreen(ScreenManager):
     mode = StringProperty("wide")
     right_panel = ObjectProperty()
 
     def __init__(self,**kwargs):
-        super(MascaretBigScreen, self).__init__()
+        super(MascaretHomeScreen, self).__init__()
         self.transition=NoTransition()
 
-        ###################Looking into Module#####################
+        module_data = self.get_module_available()
+
+        self.homepage = HomePage()
+        self.add_widget(self.homepage)
+
+        self.create_modules_and_tools(module_data)
+                  
+        
+##        self.right_panel= RightPanel()
+##        self.current_screen.screen1_box.add_widget(self.right_panel)
+
+
+    def get_module_available(self):
+        
+                ###################Looking into Module#####################
 
         #DB CONNECTION
         db = pymysql.connect("localhost","root","","mascaretdb")
@@ -58,16 +72,23 @@ class MascaretBigScreen(ScreenManager):
         #On obtient une matrice
         module_data = cursor.fetchall()
 
+        cursor.close()
+        db.close()
+
+        return module_data
+
+    
+    def create_modules_and_tools(self, module_data):
+
         list_modules = []
 
         #On va chercher les infos
         for row in module_data:
-            temp_module = Module(str(row[0]),[])
 
             module_appearance = False
             for mod in list_modules:
                 #Si le module existe deja dans la liste
-                if mod.module_name == temp_module.module_name:
+                if mod.module_name == str(row[0]):
                     module_appearance = True
                     index_mod = list_modules.index(mod)
                     break
@@ -75,53 +96,47 @@ class MascaretBigScreen(ScreenManager):
             if module_appearance:
                 list_modules[index_mod].list_outils.append(Outil(str(row[1])))
             else:
+                temp_module = Module(str(row[0]),[])
                 temp_module.list_outils.append(Outil(str(row[1])))
                 list_modules.append(temp_module)
 
-        cursor.close()
-        db.close()
-
-        self.homepage = HomePage()
-        self.add_widget(self.homepage)
-
-
+        #On créer la GUI pour chaque Module
         for mod in list_modules:
             newmodule = ModuleGUI(name = mod.module_name)
             for tools in mod.list_outils:
                 newmodule.tools_box.add_widget(HPOutilsButton(tools.outil_name))
             self.add_widget(newmodule)
             self.homepage.module_box.add_widget(HPModuleButton(strLinkedModule=mod.module_name))
-            
+    
 
-        ################################################################
-
-            
-        
-        self.right_panel= RightPanel()
-        self.current_screen.screen1_box.add_widget(self.right_panel)
-
-    def on_mode(self, widget, mode):
-        if mode == "wide" :
-            print("wide")
-            try:
-                self.current_screen.get_screen('2').remove_widget(self.right_panel)
-                self.current_screen.screen1_box.add_widget(self.right_panel)
-                self.current_screen.right_Button.pos_hint = {'x': 1}
-                self.current_screen.right_Button.disabled= True
-            except:
-                pass
-        else:
-            print("narrow")
-            try:
-                self.current_screen.screen1_box.remove_widget(self.right_panel)
-                self.current_screen.get_screen('2').add_widget(self.right_panel)
-                self.current_screen.right_Button.pos_hint = {'x': 0.93}
-                self.current_screen.right_Button.disabled= False
-            except:
-                pass
+##
+##    def on_mode(self, widget, mode):
+##        if mode == "wide" :
+##            print("wide")
+##            try:
+##                self.current_screen.right_Button.pos_hint = {'x': 1}
+##                self.current_screen.right_Button.disabled= True
+##                self.current_screen.get_screen('2').remove_widget(self.right_panel)
+##                self.current_screen.screen1_box.add_widget(self.right_panel)
+##            except:
+##                pass
+##        else:
+##            print("narrow")
+##            try:
+##                self.current_screen.right_Button.pos_hint = {'x': 0.93}
+##                self.current_screen.right_Button.disabled= False
+##                self.current_screen.screen1_box.remove_widget(self.right_panel)
+##                self.current_screen.get_screen('2').add_widget(self.right_panel)
+##                print(self.current_screen.name)
+##            except:
+##                pass
 
     def on_right_panel(self, *args):
         pass
+
+
+
+
 
 
 
