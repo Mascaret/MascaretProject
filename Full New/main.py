@@ -125,7 +125,6 @@ class MascaretHomeScreen(ScreenManager):
                 except:
                     pass
 
-
         else:
             print("narrow")
             for screen in self.screens:
