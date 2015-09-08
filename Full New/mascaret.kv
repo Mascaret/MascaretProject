@@ -1,3 +1,5 @@
+
+
 MascaretRoot:
 
 
@@ -53,6 +55,7 @@ MascaretRoot:
                     spacing: "5dp"
                     padding: "8dp"
                     TextInput:
+                        text: "guichetcle"
                         focus: True
                         background_color: (1, 1, 1, 0)
                         foreground_color: (1,1,1,0.8)
@@ -74,6 +77,7 @@ MascaretRoot:
                         font_name: 'OCRAEXT.TTF'
                         font_size: '20dp'
                         cursor_color: 1,1,1,0.8
+                        text: "laptite"
             BoxLayout:
                 size_hint: 1, 0.25
                 Label:
@@ -130,7 +134,7 @@ MascaretRoot:
                     on_press:
                         self.parent.parent.parent.manager.transition.direction = 'left'
                         self.parent.parent.parent.manager.current = '2'
-            FloatLayout:
+            BoxLayout:
                 id: right_pan
                 canvas:
                     Color:
@@ -201,7 +205,7 @@ MascaretRoot:
                     text: 'HP'
                     on_release: self.parent.parent.parent.parent.manager.current = 'homepage'
 
-            FloatLayout:
+            BoxLayout:
                 id: right_pan
                 canvas:
                     Color:
@@ -227,19 +231,45 @@ MascaretRoot:
 
 
 
+<Formulaire_database_1>:
+    new_legal_entity_box: new_legal_entity
+    size: self.size
+    pos: self.pos
+    BoxLayout:
+        spacing: "5dp"
+        size_hint: None, None
+        pos_hint:{'x':0.1,'y':0.5}
+        width: "300dp"
+        height: "40dp"
+        TextInput:
+            id: new_legal_entity
+        Button:
+            size_hint: 0.5,1
+            text: "Add"
+            on_release: root.send_new_legal_entity()
+    TestList:
+        size_hint: 0.3,0.5
+        pos_hint:{'x':0.5,'y':0.3}
 
 
 
 
-<RightPanel>:
-    canvas:
-        Color:
-            rgba: (1,1,1,1)
-        Rectangle:
-            size: self.size
-            pos: self.pos
-    Button:
-        size_hint: 0.5,0.5
-        pos_hint: {'x': 0.25,'y': 0.25}
+<TestListItem>:
+    size_hint_y: None
+    size_hint_x: None
+    height: "30dp"
+    width: "200dp"
+    selected_color: (0.1, 0.1, 0.1, 0.1)
+    deselected_color: (1,1,1,1)
+    italic: True
+    font_size: '20dp'
+    text_size: self.size
+    halign: 'justify'
+    valign: 'top'
+    font_name: 'OCRAEXT.TTF'
 
-<RightPanelBtn>:
+
+        
+
+            
+
